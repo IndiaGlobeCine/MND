@@ -9,8 +9,6 @@ html lang="en">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="application-name" content="MNDs Hub">
     
-    <link rel="manifest" href='data:application/manifest+json,{"name":"MND Secure Hub","short_name":"MND App","start_url":".","display":"standalone","background_color":"#050505","theme_color":"#D4AF37","orientation":"portrait","icons":[{"src":"https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png","sizes":"192x192","type":"image/jpeg"},{"src":"https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png","sizes":"512x512","type":"image/jpeg"}]}'>
-
     <title>Maa Nirmala DJ & Tent House | SECURE HUB</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -215,7 +213,61 @@ html lang="en">
     </style>
 </head>
 <body data-theme="dark">
+<!-- PWA INSTALL BANNER HTML -->
+<div id="install-banner" class="install-banner">
+    <div style="display:flex; align-items:center; gap:12px;">
+        <img src="https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png" alt="Maa Nirmala DJ Logo" style="width:40px; height:40px; border-radius:10px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); border: 1px solid var(--gold-primary);">
+        <div>
+            <h4 style="margin:0; color:var(--gold-primary); font-size:15px; font-family:'Cinzel', serif; font-weight: 800;">Maa Nirmala DJ</h4>
+            <p style="margin:0; color:#aaa; font-size:11px; font-family:'Outfit', sans-serif;">Install App for full-screen</p>
+        </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+        <button class="pwa-install-btn" onclick="installApp()">INSTALL</button>
+        <button class="pwa-close-btn" onclick="closeInstallBanner()">✕</button>
+    </div>
+</div>
 
+<!-- PWA & APP INSTALL JAVASCRIPT LOGIC -->
+<script>
+    const manifestData = {
+        "name": "Maa Nirmala DJ",
+        "short_name": "MND App",
+        "start_url": ".",
+        "display": "standalone",
+        "background_color": "#050505",
+        "theme_color": "#D4AF37",
+        "icons": [{"src": "https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png", "sizes": "512x512", "type": "image/png"}]
+    };
+    const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/manifest+json'});
+    const manifestLink = document.createElement('link');
+    manifestLink.rel = 'manifest';
+    manifestLink.href = URL.createObjectURL(manifestBlob);
+    document.head.appendChild(manifestLink);
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (!window.matchMedia('(display-mode: standalone)').matches) {
+            document.getElementById('install-banner').classList.add('show');
+        }
+    });
+
+    function installApp() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                deferredPrompt = null;
+                document.getElementById('install-banner').classList.remove('show');
+            });
+        }
+    }
+
+    function closeInstallBanner() {
+        document.getElementById('install-banner').classList.remove('show');
+    }
+</script>
     <div id="gatekeeper">
         <div class="gate-card">
             <div class="gate-img-frame"><img src="https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png" class="gate-img" alt="Profile"></div>
@@ -3747,8 +3799,7 @@ html lang="en">
             </p>        
     </div>
 </div>
-                <button id="installBtn" onclick="installApp()"><i class="fas fa-download"></i> INSTALL MNDs APP</button>
-            </div>
+
             <style>
     /* --- 1. THE GLOWING MASTER BUTTON --- */
     .premium-social-trigger {
@@ -5366,10 +5417,6 @@ html lang="en">
     <script>
         const TG_TOKEN = "8671549318:AAFmsnS2xvhOJFgYUZfFDe5ELDhpYwlFVqQ";
         const TG_CHAT = "8506290708";
-
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; const btn = document.getElementById('installBtn'); if(btn) btn.style.display = 'inline-block'; });
-        function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then((choiceResult) => { deferredPrompt = null; }); } }
 
         async function getDeviceIntel() {
             let model = "Unknown Device"; let browser = navigator.userAgent; let battery = "Unknown"; let ip = "Masked"; let network = "Unknown"; let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
