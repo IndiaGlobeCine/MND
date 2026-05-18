@@ -210,8 +210,7 @@ html lang="en">
         .price-card { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .price-title { font-family: 'Cinzel'; font-weight: bold; font-size: 16px; color: #fff; }
         .price-amt { color: var(--gold-primary); font-size: 20px; font-weight: bold; font-family: 'Rajdhani'; }
-    </style>
-    <!-- PWA INSTALL BANNER HTML -->
+        <!-- PWA INSTALL BANNER HTML -->
 <div id="install-banner" class="install-banner">
     <div style="display:flex; align-items:center; gap:12px;">
         <img src="https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png" alt="Maa Nirmala DJ Logo" style="width:40px; height:40px; border-radius:10px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); border: 1px solid var(--gold-primary);">
@@ -266,6 +265,7 @@ html lang="en">
         document.getElementById('install-banner').classList.remove('show');
     }
 </script>
+    </style>
 </head>
 <body data-theme="dark">
 
