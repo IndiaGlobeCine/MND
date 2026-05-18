@@ -269,6 +269,32 @@ html lang="en">
         </div>
     </div>
 </div>
+<div id="mndInstallAppPopup" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:999999999; justify-content:center; align-items:center; backdrop-filter:blur(15px); animation:fadeInOverlay 0.5s ease;">
+    <div style="background:linear-gradient(135deg, #110e08 0%, #050505 100%); border:2px solid #D4AF37; border-radius:20px; padding:30px; text-align:center; width:92%; max-width:400px; box-shadow:0 20px 60px rgba(212,175,55,0.4); position:relative; animation:slideUpZoom 0.5s ease;">
+        
+        <span onclick="closeMndInstallPopup()" style="position:absolute; top:15px; right:20px; color:#D4AF37; font-size:35px; cursor:pointer;">&times;</span>
+
+        <img src="https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png" alt="MND Logo" style="width:80px; height:80px; border-radius:15px; border:2px solid #D4AF37; box-shadow:0 0 15px rgba(212,175,55,0.5); margin-bottom:15px;">
+
+        <div style="color:#D4AF37; font-size:22px; font-family:'Cinzel', serif; font-weight:900; letter-spacing:1px; margin-bottom:5px;">
+            INSTALL MND APP
+        </div>
+        <div style="color:#aaa; font-family:'Outfit', sans-serif; font-size:13px; margin-bottom:20px;">
+            Get the Ultimate Full-Screen Experience
+        </div>
+
+        <div style="color:#ddd; font-family:'Outfit', sans-serif; font-size:14px; text-align:left; line-height:1.8; margin-bottom:25px; background:rgba(212,175,55,0.05); padding:15px; border-radius:12px; border:1px dashed rgba(212,175,55,0.3);">
+            <i class="fas fa-bolt" style="color:#D4AF37; width:20px;"></i> <b>Faster Loading Speeds</b><br>
+            <i class="fas fa-mobile-alt" style="color:#D4AF37; width:20px;"></i> <b>Full-Screen Premium UI</b><br>
+            <i class="fas fa-bell" style="color:#D4AF37; width:20px;"></i> <b>Instant Booking Alerts</b><br>
+            <i class="fas fa-shield-alt" style="color:#D4AF37; width:20px;"></i> <b>100% Secure & Ad-Free</b>
+        </div>
+
+        <button onclick="triggerMndAppInstall()" style="width:100%; background:linear-gradient(135deg, #D4AF37 0%, #FFD700 100%); color:#000; padding:15px 20px; border-radius:30px; border:none; font-weight:900; font-family:'Outfit', sans-serif; font-size:16px; letter-spacing:1px; cursor:pointer; box-shadow:0 5px 20px rgba(212, 175, 55, 0.4); text-transform:uppercase; transition:transform 0.3s ease;">
+            <i class="fas fa-download"></i> DOWNLOAD NOW
+        </button>
+    </div>
+</div>
 
 <div id="calendarModalOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#050505; z-index:9999999; justify-content:center; align-items:center;">
     <div style="width:100%; height:100%; border:none; background:linear-gradient(145deg, #110e08 0%, #050505 100%); display:flex; flex-direction:column;">
@@ -5638,3 +5664,62 @@ box.scrollTop = box.scrollHeight;
 }, 700);
         }
     </script>
+
+<script>
+    // 1. Generate Manifest
+    const mndManifestData = {
+        "name": "Maa Nirmala DJ",
+        "short_name": "MND App",
+        "start_url": ".",
+        "display": "standalone",
+        "background_color": "#050505",
+        "theme_color": "#D4AF37",
+        "icons": [{"src": "https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png", "sizes": "512x512", "type": "image/png"}]
+    };
+    const mndManifestBlob = new Blob([JSON.stringify(mndManifestData)], {type: 'application/manifest+json'});
+    const mndManifestLink = document.createElement('link');
+    mndManifestLink.rel = 'manifest';
+    mndManifestLink.href = URL.createObjectURL(mndManifestBlob);
+    document.head.appendChild(mndManifestLink);
+
+    // 2. Catch the Install Prompt
+    let mndInstallPromptEvent;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        mndInstallPromptEvent = e;
+    });
+
+    // 3. Logic to switch from Welcome Popup to Install Popup
+    function closeWelcomeAndShowInstall() {
+        // Hide the Welcome popup
+        document.getElementById('royalWelcomePopup').style.display = 'none';
+
+        // Check if app is NOT already installed
+        if (!window.matchMedia('(display-mode: standalone)').matches) {
+            // Show the Install Popup after a tiny delay for a smooth effect
+            setTimeout(() => {
+                document.getElementById('mndInstallAppPopup').style.display = 'flex';
+            }, 400); 
+        }
+    }
+
+    // 4. Trigger the actual Browser Download
+    function triggerMndAppInstall() {
+        if (mndInstallPromptEvent) {
+            mndInstallPromptEvent.prompt();
+            mndInstallPromptEvent.userChoice.then((choiceResult) => {
+                mndInstallPromptEvent = null;
+                closeMndInstallPopup();
+            });
+        } else {
+            // Fallback for iOS/Safari users
+            alert("To install, tap the 'Share' icon in your browser menu and select 'Add to Home Screen'.");
+            closeMndInstallPopup();
+        }
+    }
+
+    // 5. Close the Install Popup completely
+    function closeMndInstallPopup() {
+        document.getElementById('mndInstallAppPopup').style.display = 'none';
+    }
+</script>
