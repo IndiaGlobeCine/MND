@@ -247,6 +247,7 @@
 <body data-theme="dark">
 
 <div id="install-banner" class="install-banner">
+<div id="mnd-premium-install-banner" class="install-banner">
     <div style="display:flex; align-items:center; gap:15px;">
         <img src="https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png" alt="Maa Nirmala DJ Logo" style="width:45px; height:45px; border-radius:12px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); border: 1px solid #D4AF37;">
         <div>
@@ -255,13 +256,13 @@
         </div>
     </div>
     <div style="display:flex; align-items:center;">
-        <button class="pwa-install-btn" onclick="installApp()">INSTALL</button>
-        <button class="pwa-close-btn" onclick="closeInstallBanner()">✕</button>
+        <button class="pwa-install-btn" onclick="mndPremiumInstallApp()">INSTALL</button>
+        <button class="pwa-close-btn" onclick="mndClosePremiumBanner()">✕</button>
     </div>
 </div>
 
 <script>
-    const manifestData = {
+    const mndManifestData = {
         "name": "Maa Nirmala DJ",
         "short_name": "MND App",
         "start_url": ".",
@@ -270,33 +271,33 @@
         "theme_color": "#D4AF37",
         "icons": [{"src": "https://i.postimg.cc/76mz1v2j/file-0000000090a471fa84cbecd48a774885.png", "sizes": "512x512", "type": "image/png"}]
     };
-    const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/manifest+json'});
-    const manifestLink = document.createElement('link');
-    manifestLink.rel = 'manifest';
-    manifestLink.href = URL.createObjectURL(manifestBlob);
-    document.head.appendChild(manifestLink);
+    const mndManifestBlob = new Blob([JSON.stringify(mndManifestData)], {type: 'application/manifest+json'});
+    const mndManifestLink = document.createElement('link');
+    mndManifestLink.rel = 'manifest';
+    mndManifestLink.href = URL.createObjectURL(mndManifestBlob);
+    document.head.appendChild(mndManifestLink);
 
-    let deferredPrompt;
+    let mndPremiumPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
-        deferredPrompt = e;
+        mndPremiumPrompt = e;
         if (!window.matchMedia('(display-mode: standalone)').matches) {
-            document.getElementById('install-banner').classList.add('show');
+            document.getElementById('mnd-premium-install-banner').classList.add('show');
         }
     });
 
-    function installApp() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choiceResult) => {
-                deferredPrompt = null;
-                document.getElementById('install-banner').classList.remove('show');
+    function mndPremiumInstallApp() {
+        if (mndPremiumPrompt) {
+            mndPremiumPrompt.prompt();
+            mndPremiumPrompt.userChoice.then((choiceResult) => {
+                mndPremiumPrompt = null;
+                document.getElementById('mnd-premium-install-banner').classList.remove('show');
             });
         }
     }
 
-    function closeInstallBanner() {
-        document.getElementById('install-banner').classList.remove('show');
+    function mndClosePremiumBanner() {
+        document.getElementById('mnd-premium-install-banner').classList.remove('show');
     }
 </script>
 <div id="gatekeeper">
